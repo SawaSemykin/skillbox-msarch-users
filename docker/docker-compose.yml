@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+  db:
+    container_name: pg
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: usr
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: users
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg:/var/lib/pas
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@root.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin:/var/lib/pas
+    depends_on:
+      - db
+volumes:
+  pg:
+  pgadmin:
