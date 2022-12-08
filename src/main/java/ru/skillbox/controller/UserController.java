@@ -1,15 +1,13 @@
 package ru.skillbox.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.exception.ResourceNotFoundException;
+import ru.skillbox.dto.UserDto;
+import ru.skillbox.mapper.AbstractMapper;
 import ru.skillbox.model.User;
 import ru.skillbox.service.UserService;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -18,29 +16,38 @@ public class UserController {
 
     private final UserService userService;
 
+    private final AbstractMapper<UserDto, User> userMapper;
+
+    private final AbstractMapper<List<UserDto>, List<User>> userListMapper;
+
     @PostMapping
-    public long createUser(@RequestBody User user) {
+    public long createUser(@RequestBody UserDto userDto) {
+        User user = userMapper.toEntity(userDto);
         return userService.createUser(user);
     }
 
     @PutMapping(path = "/{id}")
-    public long updateUser(@RequestBody User user, @PathVariable Long id) {
+    public long updateUser(@RequestBody UserDto userDto, @PathVariable Long id) {
+        User user = userMapper.toEntity(userDto);
         return userService.updateUser(user, id);
     }
 
     @DeleteMapping(path = "/{id}")
-    public long deleteUser(@RequestBody User user, @PathVariable Long id) {
+    public long deleteUser(@RequestBody UserDto userDto, @PathVariable Long id) {
+        User user = userMapper.toEntity(userDto);
         return userService.deleteUser(user, id);
     }
 
     @GetMapping(path = "/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.getUser(id);
+    public UserDto getUser(@PathVariable Long id) {
+        User user = userService.getUser(id);
+        return userMapper.toDto(user);
     }
 
     @GetMapping
-    public List<User> getUsers() {
-        return userService.getUsers();
+    public List<UserDto> getUsers() {
+        List<User> users = userService.getUsers();
+        return userListMapper.toDto(users);
     }
 
     @PostMapping(path = "/{id}/subscriptions/{subscriptionId}")
