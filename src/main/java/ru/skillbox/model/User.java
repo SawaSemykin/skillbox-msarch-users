@@ -67,7 +67,7 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "subscriptions",
             joinColumns = @JoinColumn(name = "id"),
@@ -75,7 +75,7 @@ public class User {
     )
     private List<User> subscriptions = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "subscriptions")
+    @ManyToMany(mappedBy = "subscriptions", fetch = FetchType.LAZY)
     private List<User> subscribers = new ArrayList<>();
 
     @Column(name = "deleted")
