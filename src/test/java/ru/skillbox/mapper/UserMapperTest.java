@@ -60,18 +60,23 @@ public class UserMapperTest {
         userDto.setPhoneNumber("+7(999)99-99-99");
         userDto.setDeleted(true);
 
-        UserDto subscription = new UserDto();
-        subscription.setId(2L);
-        subscription.setSubscribers(Sets.newSet(userDto));
-        userDto.setSubscriptions(Sets.newSet(subscription));
-
         User user = userMapper.toEntity(userDto);
 
         assertNotNull(user);
         assertEquals(userDto.getId(), user.getId());
         assertEquals(userDto.getFirstName(), user.getFirstName());
-
+        assertEquals(userDto.getLastName(), user.getLastName());
+        assertEquals(userDto.getMiddleName(), user.getMiddleName());
+        assertEquals(userDto.getSex(), user.getSex());
+        assertEquals(userDto.getBirthday(), user.getBirthday());
+        assertNotNull(user.getCity());
+        assertNotNull(user.getAvatars());
+        assertEquals(2, user.getAvatars().size());
+        assertEquals(userDto.getNickName(), user.getNickName());
+        assertNotNull(user.getHardSkills());
+        assertEquals(2, user.getHardSkills().size());
+        assertEquals(userDto.getEmail(), user.getEmail());
+        assertEquals(userDto.getPhoneNumber(), user.getPhoneNumber());
+        assertEquals(userDto.isDeleted(), user.isDeleted());
     }
-
-
 }

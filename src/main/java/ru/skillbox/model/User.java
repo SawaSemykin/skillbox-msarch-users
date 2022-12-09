@@ -4,7 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -71,10 +73,10 @@ public class User {
             joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "subscription_id")
     )
-    private Set<User> subscriptions = new HashSet<>();
+    private List<User> subscriptions = new ArrayList<>();
 
     @ManyToMany(mappedBy = "subscriptions")
-    private Set<User> subscribers = new HashSet<>();
+    private List<User> subscribers = new ArrayList<>();
 
     @Column(name = "deleted")
     private boolean deleted;

@@ -1,21 +1,32 @@
 package ru.skillbox.service;
 
-import ru.skillbox.model.User;
+import org.springframework.validation.annotation.Validated;
+import ru.skillbox.dto.UserDto;
+import ru.skillbox.validation.OnCreateUser;
+import ru.skillbox.validation.OnUpdateUser;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 public interface UserService {
-    long createUser(User user);
+    @Validated(OnCreateUser.class)
+    long createUser(@Valid UserDto user);
 
-    long updateUser(User user, Long id);
+    @Validated(OnUpdateUser.class)
+    long updateUser(@Valid UserDto user, Long id);
 
-    long deleteUser(User user, Long id);
+    long deleteUser(Long id);
 
-    User getUser(Long id);
+    UserDto getUser(Long id);
 
-    List<User> getUsers();
+    List<UserDto> getUsers();
 
     void subscribe(long id, long subscriptionId);
 
     void unsubscribe(long id, long subscriptionId);
+
+    List<UserDto> getSubscriptions(Long id);
+
+    List<UserDto> getSubscribers(Long id);
 }

@@ -3,8 +3,6 @@ package ru.skillbox.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.dto.UserDto;
-import ru.skillbox.mapper.AbstractMapper;
-import ru.skillbox.model.User;
 import ru.skillbox.service.UserService;
 
 import java.util.List;
@@ -16,38 +14,29 @@ public class UserController {
 
     private final UserService userService;
 
-    private final AbstractMapper<UserDto, User> userMapper;
-
-    private final AbstractMapper<List<UserDto>, List<User>> userListMapper;
-
     @PostMapping
     public long createUser(@RequestBody UserDto userDto) {
-        User user = userMapper.toEntity(userDto);
-        return userService.createUser(user);
+        return userService.createUser(userDto);
     }
 
     @PutMapping(path = "/{id}")
     public long updateUser(@RequestBody UserDto userDto, @PathVariable Long id) {
-        User user = userMapper.toEntity(userDto);
-        return userService.updateUser(user, id);
+        return userService.updateUser(userDto, id);
     }
 
     @DeleteMapping(path = "/{id}")
-    public long deleteUser(@RequestBody UserDto userDto, @PathVariable Long id) {
-        User user = userMapper.toEntity(userDto);
-        return userService.deleteUser(user, id);
+    public long deleteUser(@PathVariable Long id) {
+        return userService.deleteUser(id);
     }
 
     @GetMapping(path = "/{id}")
     public UserDto getUser(@PathVariable Long id) {
-        User user = userService.getUser(id);
-        return userMapper.toDto(user);
+        return userService.getUser(id);
     }
 
     @GetMapping
     public List<UserDto> getUsers() {
-        List<User> users = userService.getUsers();
-        return userListMapper.toDto(users);
+        return userService.getUsers();
     }
 
     @PostMapping(path = "/{id}/subscriptions/{subscriptionId}")
@@ -60,5 +49,15 @@ public class UserController {
     public void unsubscribe(@PathVariable(name = "id") long id, @PathVariable(name = "subscriptionId") long subscriptionId) {
         userService.unsubscribe(id, subscriptionId);
 
+    }
+
+    @GetMapping(path = "/{id}/subscriptions")
+    public List<UserDto> getSubscriptions(@PathVariable(name = "id") Long id) {
+        return userService.getSubscriptions(id);
+    }
+
+    @GetMapping(path = "/{id}/subscribers")
+    public List<UserDto> getSubscribers(@PathVariable(name = "id") Long id) {
+        return userService.getSubscribers(id);
     }
 }

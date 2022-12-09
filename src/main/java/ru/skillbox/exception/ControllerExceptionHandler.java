@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -26,6 +27,12 @@ public class ControllerExceptionHandler {
         return errorMessage;
     }
 
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage handleValidationException(ValidationException e, WebRequest request) {
+        return handle(HttpStatus.BAD_REQUEST, e, request, true);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorMessage handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
@@ -38,13 +45,6 @@ public class ControllerExceptionHandler {
     public ErrorMessage handleResourceNotFoundException(ResourceNotFoundException e,
                                                         WebRequest request) {
         return handle(HttpStatus.NOT_FOUND, e, request, false);
-    }
-
-    @ExceptionHandler(UserIdNotProvidedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleResourceNotFoundException(UserIdNotProvidedException e,
-                                                        WebRequest request) {
-        return handle(HttpStatus.BAD_REQUEST, e, request, false);
     }
 
     @ExceptionHandler(UserIdNotConsistentException.class)
