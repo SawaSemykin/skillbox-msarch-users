@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+    <changeSet id="baseline" author="Aleksandr Semykin">
+        <createTable tableName="avatars">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_name" type="varchar(255)" />
+        </createTable>
+
+        <createTable tableName="cities">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="cities_id_pk"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="user_id" type="bigint"/>
+        </createTable>
+
+        <createTable tableName="hard_skills">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="hard_skills_id_pk" />
+            </column>
+            <column name="name" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="users">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="users_id_pk"/>
+            </column>
+            <column name="birthday" type="date"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="first_name" type="varchar(255)"/>
+            <column name="last_name" type="varchar(255)"/>
+            <column name="middle_name" type="varchar(255)"/>
+            <column name="nick_name" type="varchar(255)"/>
+            <column name="phone_number" type="varchar(50)"/>
+            <column name="sex" type="varchar(50)"/>
+            <column name="city_id" type="bigint"/>
+            <column name="deleted" type="boolean"/>
+        </createTable>
+
+        <createTable tableName="users_hard_skills">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hard_skill_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="subscriptions">
+            <column name="id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subscription_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey  columnNames="user_id, hard_skill_id"
+                        tableName="users_hard_skills"/>
+
+        <addPrimaryKey  columnNames="id, subscription_id"
+                        tableName="subscriptions"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="user_id"
+                baseTableName="avatars"
+                constraintName="fk_avatars_user_id"
+                referencedColumnNames="id"
+                referencedTableName="users"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="user_id"
+                baseTableName="cities"
+                constraintName="fk_cities_user_id"
+                referencedColumnNames="id"
+                referencedTableName="users"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="city_id"
+                baseTableName="users"
+                constraintName="fk_users_city_id"
+                referencedColumnNames="id"
+                referencedTableName="cities"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="hard_skill_id"
+                baseTableName="users_hard_skills"
+                constraintName="fk_users_hard_skills_hard_skill_id"
+                referencedColumnNames="id"
+                referencedTableName="hard_skills"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="user_id"
+                baseTableName="users_hard_skills"
+                constraintName="fk_users_hard_skills_user_id"
+                referencedColumnNames="id"
+                referencedTableName="users"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="id"
+                baseTableName="subscriptions"
+                constraintName="fk_subscriptions_id"
+                referencedColumnNames="id"
+                referencedTableName="users"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="subscription_id"
+                baseTableName="subscriptions"
+                constraintName="fk_subscriptions_subscription_id"
+                referencedColumnNames="id"
+                referencedTableName="users"/>
+
+        <addAutoIncrement tableName="cities" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1"/>
+        <addAutoIncrement tableName="hard_skills" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1"/>
+        <addAutoIncrement tableName="users" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1"/>
+    </changeSet>
+</databaseChangeLog>
