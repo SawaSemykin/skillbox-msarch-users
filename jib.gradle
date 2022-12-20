@@ -1,0 +1,15 @@
+jib {
+    container.creationTime = 'USE_CURRENT_TIMESTAMP'
+    from {
+        image = 'bellsoft/liberica-openjdk-alpine-musl:17.0.5-8'
+    }
+    to {
+        tags = [project.version.toString()]
+        image = "sawasemykin/${project.name}"
+//        auth {
+//            username = USERNAME
+//            password = PASSWORD
+//        }
+    }
+}
+// ./gradlew jib
