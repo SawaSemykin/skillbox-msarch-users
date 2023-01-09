@@ -10,4 +10,5 @@
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
     <!-- Changes to include -->
     <include file="/db/changelog/changes/baseline.xml"/>
+    <include file="/db/changelog/changes/constraints.xml"/>
 </databaseChangeLog>

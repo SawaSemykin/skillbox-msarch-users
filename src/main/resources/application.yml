@@ -9,7 +9,7 @@ spring:
     change-log: classpath:db/changelog/changelog-master.xml
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate:
@@ -26,5 +26,6 @@ spring:
     username: ${USERS_DATASOURCE_USERNAME}
     password: ${USERS_DATASOURCE_PASSWORD}
   jpa:
-    hibernate:
-      ddl-auto: create-drop # переключить на validate, когда будут разные базы dev, prod
+    properties:
+      hibernate:
+        format_sql: false

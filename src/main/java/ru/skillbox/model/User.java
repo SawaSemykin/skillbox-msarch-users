@@ -23,16 +23,16 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name = "middle_name")
     private String middleName;
 
-    @Column(name = "sex")
+    @Column(name = "sex", nullable = false)
     @Enumerated(EnumType.STRING)
     private Sex sex;
 
@@ -46,11 +46,11 @@ public class User {
     @CollectionTable(name = "avatars")
     @AttributeOverride(
             name = "fileName",
-            column = @Column(name = "file_name")
+            column = @Column(name = "file_name", nullable = false)
     )
     private Set<Avatar> avatars = new HashSet<>();
 
-    @Column(name = "nick_name")
+    @Column(name = "nick_name", nullable = false)
     private String nickName;
 
     @ManyToMany
@@ -61,10 +61,10 @@ public class User {
     )
     private Set<HardSkill> hardSkills = new HashSet<>();
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -78,7 +78,7 @@ public class User {
     @ManyToMany(mappedBy = "subscriptions", fetch = FetchType.LAZY)
     private List<User> subscribers = new ArrayList<>();
 
-    @Column(name = "deleted")
+    @Column(name = "deleted", nullable = false)
     private boolean deleted;
 
     public void subscribe(User subscription) {
