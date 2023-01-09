@@ -20,7 +20,7 @@ public class HardSkill {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "hardSkills")
